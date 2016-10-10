@@ -1,0 +1,17 @@
+{
+  "name": "nrdb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap -Rspec test",
+    "coverage": "tap --coverage test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^3.7.1",
+    "tap": "^7.1.2"
+  }
+}
