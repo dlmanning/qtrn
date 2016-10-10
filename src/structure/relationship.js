@@ -1,8 +1,7 @@
 const Entity = require('./entity')
-const Node = require('./vertex')
 
 class Relationship extends Entity {
-  constructor (id, type, start, end, properties) {
+  constructor (graph, type, start, end, properties) {
     if (!(start instanceof Node)) {
       throw new TypeError('Expected value passed for \'start\' to be a Node')
     }
@@ -11,7 +10,7 @@ class Relationship extends Entity {
       throw new TypeError('Expected value passed for \'end\' to be a Node')
     }
 
-    super(id, type, properties)
+    super(graph, type, properties)
 
     this.start = start
     this.end = end
@@ -19,3 +18,5 @@ class Relationship extends Entity {
 }
 
 module.exports = Relationship
+
+const Node = require('./node')

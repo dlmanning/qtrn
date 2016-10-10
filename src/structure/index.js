@@ -1,6 +1,6 @@
 module.exports = {
   Entity: require('./entity'),
-  Node: require('./vertex'),
+  Node: require('./node'),
   Relationship: require('./relationship'),
   Graph: require('./graph')
 }

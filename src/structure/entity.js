@@ -2,16 +2,16 @@ const { objectEntries } = require('../helpers')
 
 class Entity {
   /**
-   * @param {string} id
+   * @param {Graph} graph
    * @param {string} type
    * @param {Object} [properties]
    */
-  constructor (id, type, properties) {
-    if (id == null || typeof id !== 'string') {
-      throw new TypeError('Expected value passed for \'id\' to be a string')
+  constructor (graph, type, properties) {
+    if (!(graph instanceof Graph)) {
+      throw new TypeError('Expected value passed for \'graph\' to be an instance of a Graph')
     }
 
-    this.id = id
+    this.graph = graph
 
     if (type == null || typeof type !== 'string') {
       throw new TypeError('Expected value passed for \'type\' to be a string')
@@ -58,3 +58,5 @@ class Entity {
 }
 
 module.exports = Entity
+
+const Graph = require('./graph')

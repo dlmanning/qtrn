@@ -1,14 +1,14 @@
 {
-  "name": "nrdb",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "qtrn",
+  "version": "0.0.1",
+  "description": "Queries traversing related nodes",
+  "main": "src/index.js",
   "scripts": {
     "test": "tap -Rspec test",
     "coverage": "tap --coverage test"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [ "graph" ],
+  "author": "David Manning",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^3.7.1",

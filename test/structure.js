@@ -2,16 +2,16 @@ const tap = require('tap')
 const { Graph, Relationship, Node, Entity } = require('../src/structure')
 
 tap.test('Entity', t => {
-  const entity1 = new Entity('data', 'android')
+  const g = new Graph()
+
+  const entity1 = new Entity(g, 'android')
   t.type(entity1, Entity, 'construct an entity')
 
-  t.throws(() => new Entity(1, 'abc'), 'throws if id is not a string')
-  t.throws(() => new Entity('abc', 1), 'throws if type is not a string')
-  t.throws(() => new Entity('abc', 'def', 'ghi'), 'throws if properties passed to constructor is not an object')
+  t.throws(() => new Entity(g, 1), 'throws if type is not a string')
+  t.throws(() => new Entity(g, 'def', 'ghi'), 'throws if properties passed to constructor is not an object')
 
-  const entity2 = new Entity('picard', 'captain', { ship: 'enterprise' })
+  const entity2 = new Entity(g, 'captain', { ship: 'enterprise' })
 
-  t.equal(entity2.id, 'picard', 'set entity id')
   t.equal(entity2.type, 'captain', 'set entity type')
   t.equal(entity2.getProperty('ship'), 'enterprise', 'get a property set in construction')
 
@@ -21,8 +21,8 @@ tap.test('Entity', t => {
   t.match(
     entity2.getProperties(),
     {
-      ship: /^enterprise$/,
-      borgName: /^locutus$/
+      ship: /enterprise/,
+      borgName: /locutus/
     },
     'get all properties of the entity'
   )
@@ -31,16 +31,18 @@ tap.test('Entity', t => {
 })
 
 tap.test('Node', t => {
-  const node1 = new Node('deadwood', 'tv show', { status: 'cancelled' })
+  const g = new Graph()
+
+  const node1 = new Node(g, 'tv show', { title: 'deadwood', status: 'cancelled' })
   t.type(node1, Node, 'construct a node')
 
-  const node2 = new Node('Keith Carradine', 'Actor', { born: '1949-08-08T07:00:00.000Z' })
+  const node2 = new Node(g, 'Actor', { name: 'Keith Carradine', born: '1949-08-08T07:00:00.000Z' })
 
   node1.addOutgoingRelationship('actor', node2)
-  t.ok(node1.relationships.outgoing['actor'].includes(node2), 'set outgoing relationship')
+  t.ok(node1.getOutgoingRelationships('actor').includes(node2), 'set outgoing relationship')
 
   node2.addIncomingRelationship('actor', node1)
-  t.ok(node2.relationships.incoming['actor'].includes(node1), 'set incoming relationship')
+  t.ok(node2.getIncomingRelationships('actor').includes(node1), 'set incoming relationship')
 
   t.end()
 })
@@ -49,19 +51,14 @@ tap.test('Graph', t => {
   const db = new Graph()
   t.type(db, Graph, 'construct a graph')
 
-  const n1 = db.createNode('David', 'Author', { from: 'the East' })
-  t.ok(db.hasNodeWithId(n1), 'add a node to the graph')
+  const n1 = db.createNode('Author', { name: 'David', from: 'the East' })
+  t.type(n1, Node, 'creates a new Node')
 
-  t.throws(
-    () => db.createNode('David', 'Author', { from: 'the East' }),
-    'throw on attempt to add a duplicate id'
-  )
-
-  const n2 = db.createNode('ZHealth', 'Company', { business: 'medicine' })
+  const n2 = db.createNode('Company', { name: 'ZHealth', business: 'medicine' })
 
   const r1 = db.createRelationship('EMPLOYEED_BY', n1, n2, { since: '2015-06-01T07:00:00.000Z' })
 
-  t.ok(db.hasRelationshipWithId(r1), 'add a relationship to the graph')
+  t.type(r1, Relationship, 'creates a new Relationship')
 
   t.throws(
     () => db.createRelationship(1, n2, n1),

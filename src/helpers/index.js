@@ -9,7 +9,7 @@ function objectValues (obj) {
 
 /**
  * @param {Object} obj
- * @return {[string, *]}
+ * @return {Array.<[string, *]>}
  */
 function objectEntries (obj) {
   return Object.keys(obj).map(function (key) {
@@ -17,7 +17,20 @@ function objectEntries (obj) {
   })
 }
 
+function flatMapArrays (arr) {
+  const output = []
+
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr[i].length; j++) {
+      output.push(arr[i][j])
+    }
+  }
+
+  return output
+}
+
 module.exports = {
   objectEntries,
-  objectValues
+  objectValues,
+  flatMapArrays
 }
